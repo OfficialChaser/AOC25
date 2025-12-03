@@ -1,5 +1,6 @@
-import re
+import time
 
+start_time = time.perf_counter()
 with open("day2.in", "r") as f:
     ranges = [i for i in f.read().strip().split(",")]
 
@@ -15,7 +16,7 @@ for r in ranges:
         if big_num[:(len(big_num) // 2)] == big_num[(len(big_num) // 2):]:
             part_1 += int(big_num)
 
-print(part_1)
+print(f"Part 1: {part_1}")
 
 part_2 = 0
 
@@ -31,14 +32,20 @@ for r in ranges:
 
         if len(big_num) > 3 and not invalid:
             num_length = int(len(big_num))
-            possible_sequence_lens = [i for i in range(1, num_length+1) if num_length % i == 0 and i != 1 and i != num_length]
+            possible_sequence_lens = [i for i in range(2, num_length) if num_length % i == 0]
             for length in possible_sequence_lens:
                 seq = big_num[:length]
 
                 if big_num.count(seq) == len(big_num) // length:
                     invalid = True
+                    break
         
         if invalid:
                 part_2 += int(big_num)
-    
-print(part_2)
+
+end_time = time.perf_counter()
+
+print(f"Part 2: {part_2}")
+
+execution_time = end_time - start_time
+print(f"Execution time: {execution_time:.6f} seconds")
