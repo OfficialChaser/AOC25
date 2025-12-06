@@ -26,17 +26,29 @@ for num in data[split_index + 1:]:
             break
 
 part_2 = 0
+ranges = sorted(ranges)
+prev_range = ranges[0]
+for low, high in ranges[1:]:
+    prev_low = prev_range[0]
+    prev_high = prev_range[1]
 
-modified_ranges = []
-for low, high in ranges:
-    if not modified_ranges:
-        modified_ranges.append([low, high])
+    if prev_high < low:
+        part_2 += sum_range(prev_low, prev_high)
+        prev_range = [low, high]
         continue
+    
+    if low < prev_range[0]:
+        prev_range[0] = low
+    
+    if high > prev_range[1]:
+        prev_range[1] = high
 
-    for i, m_low, m_high in enumerate(modified_ranges):
-        if low < m_low:
-            m_low = low
-        if high > m_high:
-            m_high = high
+part_2 += sum_range(prev_range[0], prev_range[1])
 
 print(part_1)
+print(part_2)
+
+end_time = time.perf_counter()
+execution_time = end_time - start_time
+
+print(f"Execution time: {execution_time:.6f} seconds")
